@@ -143,9 +143,16 @@
     color: var(--danger);
 }
 
-/* watch-mode cell states */
+/* watch-mode cell states.
+   line-active uses a shadow ring, not a background — a background here would
+   sit at equal specificity with .fill/.x's background and could paint over
+   an already-filled cell, hiding it while its line is being scanned. */
 .nono-cell.line-active {
-    background: var(--accent-soft);
+    box-shadow: inset 0 0 0 999px var(--accent-soft);
+}
+.nono-cell.line-active.fill,
+.nono-cell.line-active.x {
+    box-shadow: inset 0 0 0 2px var(--accent);
 }
 .nono-cell.guess-cell {
     outline: 2px solid var(--warn);
