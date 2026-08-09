@@ -1,0 +1,117 @@
+<!-- Nonograms: curated picture-logic puzzles + a constraint-propagation/backtracking visualizer -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>Nonograms · NineByNine</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="nonograms.css">
+</head>
+<body>
+    <main id="nono-page" class="game-page">
+        <div class="game-top">
+            <h1>Nonograms</h1>
+            <div class="game-top-controls">
+                <label class="field-label" for="nono-puzzle">
+                    Puzzle
+                    <select id="nono-puzzle" aria-label="Puzzle"></select>
+                </label>
+            </div>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Nonograms mode">
+            <button type="button" id="tab-manual" class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-manual">Manual Play</button>
+            <button type="button" id="tab-watch" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-watch">Watch Algorithm</button>
+        </div>
+
+        <div id="panel-manual" role="tabpanel" aria-labelledby="tab-manual">
+            <div class="game-row">
+                <div class="board-col">
+                    <div class="nono-board-wrap">
+                        <div id="nono-board" class="nono-grid" aria-label="Nonogram puzzle grid">
+                            <div id="nono-row-clues" class="nono-row-clues"></div>
+                            <div id="nono-col-clues" class="nono-col-clues"></div>
+                            <div id="nono-cells" class="nono-cells" role="group" aria-label="Puzzle cells"></div>
+                        </div>
+                    </div>
+
+                    <div class="nono-toolbar" role="group" aria-label="Marking tool">
+                        <button type="button" id="nono-tool-fill" class="tool-btn" aria-pressed="true">
+                            <span class="tool-swatch" aria-hidden="true"></span> Fill
+                        </button>
+                        <button type="button" id="nono-tool-x" class="tool-btn x-tool" aria-pressed="false">
+                            <span class="tool-swatch" aria-hidden="true">✕</span> X
+                        </button>
+                    </div>
+
+                    <div class="nono-status-row">
+                        <span id="nono-progress">0% of cells marked</span>
+                    </div>
+
+                    <div class="nono-actions">
+                        <button type="button" class="act-btn" id="nono-reset">Reset</button>
+                        <button type="button" class="act-btn" id="nono-undo">Undo</button>
+                        <button type="button" class="act-btn hint-btn" id="nono-hint">Hint</button>
+                        <button type="button" class="act-btn ai-btn" id="nono-check">Check Puzzle</button>
+                    </div>
+
+                    <div id="nono-complete-msg" class="nono-msg-box complete hidden" role="status">Solved — every filled cell matches the picture.</div>
+                    <div id="nono-check-msg" class="nono-msg-box check hidden" role="status"></div>
+                    <div id="nono-hint-msg" class="nono-msg-box hint hidden" role="status"></div>
+                </div>
+                <div class="side-panel">
+                    <div class="box rules-box">
+                        <div class="box-label">Rules</div>
+                        The number(s) beside each row and above each column tell you the length of each run of filled cells in that line, in order, with at least one empty cell between runs.
+                    </div>
+                    <div class="box stats-box">
+                        <div class="box-label">Tools</div>
+                        Pick Fill or X, then click a cell to mark it. Click a cell that already has that mark to clear it back to unknown. Right-click applies the other tool as a shortcut.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-watch" role="tabpanel" aria-labelledby="tab-watch" class="hidden">
+            <div class="game-row">
+                <div class="board-col">
+                    <div class="nono-board-wrap">
+                        <div id="nono-algo-board" class="nono-grid" aria-label="Algorithm grid">
+                            <div id="nono-algo-row-clues" class="nono-row-clues"></div>
+                            <div id="nono-algo-col-clues" class="nono-col-clues"></div>
+                            <div id="nono-algo-cells" class="nono-cells" role="group" aria-label="Algorithm cells"></div>
+                        </div>
+                    </div>
+                    <p id="nono-status-msg" class="nono-status-msg" aria-live="polite"></p>
+                    <div class="nono-counters">
+                        <span>Deductions: <strong id="nonow-deductions">0</strong></span>
+                        <span>Guesses: <strong id="nonow-guesses">0</strong></span>
+                        <span>Backtracks: <strong id="nonow-backtracks">0</strong></span>
+                    </div>
+                    <div id="nono-playback"></div>
+                    <div id="nono-watch-done" class="nono-msg-box complete hidden" role="status">Solved — every row and column matches its clue.</div>
+                </div>
+                <div class="side-panel">
+                    <h3>How the Solver Works</h3>
+                    <ul class="exp-list">
+                        <li data-exp="exp-variable">Each <strong>cell</strong> is a variable that can be filled or empty.</li>
+                        <li data-exp="exp-constraint">Each row and column <strong>clue</strong> is a constraint on the cells in that line.</li>
+                        <li data-exp="exp-propagate">Constraint <strong>propagation</strong> compares every pattern still consistent with a clue and fills in whatever they all agree on.</li>
+                        <li data-exp="exp-backtrack">When propagation alone can't finish the puzzle, the solver <strong>guesses</strong> a cell — and backtracks if that guess leads to a contradiction.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/nav.js"></script>
+    <script src="../js/storage.js"></script>
+    <script src="../js/playback-controls.js"></script>
+    <script src="nonograms-data.js"></script>
+    <script src="nonograms-solver.js"></script>
+    <script src="nonograms.js"></script>
+</body>
+</html>

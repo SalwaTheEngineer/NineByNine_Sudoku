@@ -1,0 +1,91 @@
+<!-- N Queens: manual play + a recursive-backtracking algorithm visualizer -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>N Queens · NineByNine</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="nqueens.css">
+</head>
+<body>
+    <main id="nq-page" class="game-page">
+        <div class="game-top">
+            <h1>N Queens</h1>
+            <div class="game-top-controls">
+                <label class="field-label" for="nq-size">
+                    Board size
+                    <select id="nq-size" aria-label="Board size"></select>
+                </label>
+            </div>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="N Queens mode">
+            <button type="button" id="tab-manual" class="tab-btn" role="tab" aria-selected="true" aria-controls="panel-manual">Manual Play</button>
+            <button type="button" id="tab-watch" class="tab-btn" role="tab" aria-selected="false" aria-controls="panel-watch">Watch Algorithm</button>
+        </div>
+
+        <div id="panel-manual" role="tabpanel" aria-labelledby="tab-manual">
+            <div class="game-row">
+                <div class="board-col">
+                    <div id="nq-board" class="nq-board" aria-label="N Queens board"></div>
+                    <div class="nq-status-row">
+                        <span>Placed: <strong id="nq-placed">0</strong> / <strong id="nq-needed">8</strong></span>
+                        <span>Conflicts: <strong id="nq-conflicts">0</strong></span>
+                    </div>
+                    <div class="nq-actions">
+                        <button type="button" class="act-btn" id="nq-reset">Reset</button>
+                        <button type="button" class="act-btn" id="nq-undo">Undo</button>
+                        <button type="button" class="act-btn hint-btn" id="nq-hint">Hint</button>
+                    </div>
+                    <div id="nq-message" class="nq-message hidden" role="status">All queens placed with zero conflicts — solved!</div>
+                    <div id="nq-hint-msg" class="nq-hint-msg hidden" role="status"></div>
+                </div>
+                <div class="side-panel">
+                    <div class="box rules-box">
+                        <div class="box-label">Rules</div>
+                        Place one queen per row so that no two queens share a column or diagonal. Click a square to place a queen, click it again to remove it.
+                    </div>
+                    <div class="box stats-box">
+                        <div class="box-label">Reading the board</div>
+                        A queen with a red dashed outline and a "!" badge is under attack. The hatched squares show the row, column, or diagonal line an attack travels along.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="panel-watch" role="tabpanel" aria-labelledby="tab-watch" class="hidden">
+            <div class="game-row">
+                <div class="board-col">
+                    <div id="nq-algo-board" class="nq-board" aria-label="Algorithm board"></div>
+                    <p id="nq-status-msg" class="nq-status-msg" aria-live="polite"></p>
+                    <div class="nq-counters">
+                        <span>Row: <strong id="nqw-row">0</strong></span>
+                        <span>Placements tested: <strong id="nqw-tested">0</strong></span>
+                        <span>Backtracks: <strong id="nqw-backtracks">0</strong></span>
+                    </div>
+                    <div id="nq-playback"></div>
+                    <div id="nq-watch-done" class="nq-watch-done hidden" role="status">Solved — every row has a safe queen.</div>
+                </div>
+                <div class="side-panel">
+                    <h3>How Backtracking Works</h3>
+                    <ul class="exp-list">
+                        <li data-exp="exp-variable">Each <strong>row</strong> is a variable the algorithm must assign — one queen per row.</li>
+                        <li data-exp="exp-values">The <strong>columns</strong> in that row are the possible values it tries, left to right.</li>
+                        <li data-exp="exp-constraint">Queens can't share a column or diagonal — a clash rejects that column immediately.</li>
+                        <li data-exp="exp-backtrack">When a row runs out of safe columns, the algorithm <strong>backtracks</strong>: it removes the previous row's queen and tries that row's next column.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/nav.js"></script>
+    <script src="../js/storage.js"></script>
+    <script src="../js/playback-controls.js"></script>
+    <script src="nqueens-solver.js"></script>
+    <script src="nqueens.js"></script>
+</body>
+</html>

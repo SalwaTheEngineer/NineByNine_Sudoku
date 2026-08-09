@@ -1,0 +1,59 @@
+<!-- Home screen: project overview and difficulty selection -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>NineByNine Sudoku AI · CS 5100</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <div id="home-screen" class="screen active">
+        <div class="home-slab">
+            <div class="home-wrap">
+                <p class="eyebrow">CS 5100 &middot; Foundations of AI</p>
+                <h1 class="logo">NineByNine <span>Sudoku AI</span></h1>
+                <p class="subtitle">Sudoku, modeled as a constraint satisfaction problem</p>
+                <p class="desc">
+                    This project models Sudoku as a Constraint Satisfaction Problem and compares multiple AI solving strategies, including backtracking, MRV, forward checking, and local search. Each algorithm is visualized step by step, with metrics such as runtime, backtracking count, nodes explored, and constraint checks used to compare performance.
+                </p>
+                <p class="desc-note">
+                    Compare algorithms using runtime, backtracks, nodes explored, and constraint checks to evaluate search efficiency.
+                </p>
+                <p class="desc-bio">
+                    Select a difficulty to start. Run an AI solver from the board to watch it think, step by step.
+                </p>
+                <div class="diff-grid">
+                    <a href="play.html?diff=easy" class="diff-card">
+                        <div class="diff-icon diff-icon--e">
+                            <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                        </div>
+                        <div class="diff-name">Easy</div>
+                        <div class="diff-clue">30 clues given</div>
+                    </a>
+                    <a href="play.html?diff=medium" class="diff-card">
+                        <div class="diff-icon diff-icon--m">
+                            <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                        </div>
+                        <div class="diff-name">Medium</div>
+                        <div class="diff-clue">20 clues given</div>
+                    </a>
+                    <a href="play.html?diff=hard" class="diff-card">
+                        <div class="diff-icon diff-icon--h">
+                            <span class="pip"></span><span class="pip"></span><span class="pip"></span>
+                        </div>
+                        <div class="diff-name">Extreme</div>
+                        <div class="diff-clue">10 clues given</div>
+                    </a>
+                </div>
+                <p class="credits">Ayush &middot; Salwa &middot; Anjali</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/nav.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

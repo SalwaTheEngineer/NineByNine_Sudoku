@@ -1,0 +1,207 @@
+/* N Queens — page-specific styles, built on the shared tokens in ../style.css
+   (page shell, tabs, and two-column layout live in ../style.css as .game-page etc.) */
+
+/* board + cells, shared shape between manual + watch boards */
+.nq-board {
+    --n: 8;
+    display: grid;
+    grid-template-columns: repeat(var(--n), 1fr);
+    grid-template-rows: repeat(var(--n), 1fr);
+    width: min(92vw, 420px);
+    aspect-ratio: 1;
+    border-radius: var(--radius);
+    box-shadow: var(--inset-deep);
+    overflow: hidden;
+    background: var(--canvas-deep);
+}
+
+.nq-cell {
+    position: relative;
+    border: none;
+    padding: 0;
+    background: #fbfbfd;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(1.1rem, 6.5vw / var(--n, 8), 1.8rem);
+    transition: background 0.1s ease;
+}
+.nq-cell.dark {
+    background: var(--canvas-deep);
+}
+/* Watch Algorithm renders cells as plain divs (read-only, not tabbable);
+   manual play uses buttons — only the interactive ones get a pointer + hover. */
+button.nq-cell {
+    cursor: pointer;
+}
+button.nq-cell:hover {
+    background: var(--accent-soft);
+}
+.nq-cell:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+    z-index: 2;
+}
+
+.nq-piece {
+    color: var(--ink);
+    line-height: 1;
+}
+
+.nq-cell.line-conflict {
+    background-image: repeating-linear-gradient(
+        135deg,
+        var(--danger-soft),
+        var(--danger-soft) 4px,
+        transparent 4px,
+        transparent 9px
+    );
+}
+.nq-cell.attacked {
+    outline: 2px dashed var(--danger);
+    outline-offset: -2px;
+}
+.nq-cell.attacked .nq-piece {
+    color: var(--danger);
+}
+.nq-warn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--danger);
+    color: #fff;
+    font-size: 9px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* watch-mode cell states */
+.nq-cell.testing {
+    outline: 2px solid var(--warn);
+    outline-offset: -2px;
+    background: var(--warn-soft);
+}
+.nq-cell.accepted {
+    background: var(--accent2-soft);
+}
+.nq-cell.accepted .nq-piece {
+    color: var(--accent2);
+}
+.nq-cell.rejected {
+    background: var(--danger-soft);
+}
+.nq-cell.rejected::after {
+    content: "✕";
+    position: absolute;
+    color: var(--danger);
+    font-size: 0.85em;
+    font-weight: 800;
+}
+.nq-cell.ghost-removed {
+    background: var(--danger-soft);
+}
+.nq-cell.ghost-removed .nq-piece {
+    opacity: 0.45;
+    color: var(--danger);
+    animation: nq-fade-out 0.5s ease;
+}
+@keyframes nq-fade-out {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    100% {
+        opacity: 0.45;
+        transform: scale(0.85);
+    }
+}
+
+/* manual play status row */
+.nq-status-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+}
+.nq-status-row strong {
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+}
+
+.nq-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 420px;
+}
+
+.nq-message {
+    text-align: center;
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--canvas);
+    box-shadow: var(--inset);
+    color: var(--accent2);
+    font-weight: 700;
+    font-size: 0.88rem;
+    width: 100%;
+    max-width: 420px;
+}
+.nq-hint-msg {
+    text-align: center;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--canvas);
+    box-shadow: var(--inset);
+    color: var(--warn);
+    font-size: 0.8rem;
+    width: 100%;
+    max-width: 420px;
+}
+
+/* watch panel */
+.nq-status-msg {
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--canvas);
+    box-shadow: var(--inset);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    width: 100%;
+    max-width: 420px;
+    min-height: 1.4em;
+}
+.nq-counters {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 0.76rem;
+    color: var(--ink-muted);
+}
+.nq-counters strong {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+}
+.nq-watch-done {
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--canvas);
+    box-shadow: var(--inset);
+    color: var(--accent2);
+    font-weight: 700;
+    font-size: 0.85rem;
+}

@@ -1,48 +1,78 @@
-<!-- Home screen: project overview and difficulty selection -->
+<!-- Platform homepage: pick a game, each one teaches a different search algorithm -->
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NinebyNine Sudoku AI· CS 5100</title>
+    <meta name="color-scheme" content="light">
+    <title>AI Algorithms as Games · NineByNine</title>
+    <meta name="description" content="Learn classic AI search algorithms by playing the puzzles they solve, then watching the algorithm solve them step by step.">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="home-screen" class="screen active">
-        <div class="home-wrap">
-            <h1 class="logo">NinebyNine Sudoku AI</span></h1>
-            <p class="subtitle">Foundations of AI - Sudoku as a CSP</p>
-            <p class="desc">
-                This project models Sudoku as a Constraint Satisfaction Problem and compares multiple AI solving strategies, including backtracking, MRV, forward checking, and local search. Each algorithm is visualized step by step, with metrics such as runtime, backtracking count, nodes explored, and constraint checks used to compare performance. The goal is to show how heuristics reduce the search space and improve solving efficiency.
+    <main id="home-page">
+        <div class="hero">
+            <p class="eyebrow">CS 5100 &middot; Foundations of AI</p>
+            <h1>AI Algorithms as Games</h1>
+            <p>
+                Play three classic puzzles by hand, then switch to Watch Algorithm mode to see exactly how
+                backtracking and constraint propagation solve them — one tested square, one accepted move,
+                one backtrack at a time.
             </p>
-            <p class="desc-note">
-                Compare algorithms using runtime, backtracks, nodes explored, and constraint checks to evaluate search efficiency.
-            </p>
-            <p class="desc-bio">
-                Select a difficulty level to start. If needed, run an AI solver to view a step by step solution.
-            </p>
-            <div class="diff-grid">
-                <a href="play.html?diff=easy" class="diff-card">
-                    <div class="diff-icon">🌱</div>
-                    <div class="diff-name">Easy</div>
-                    <div class="diff-clue">30 Hints</div>
-                </a>
-                <a href="play.html?diff=medium" class="diff-card">
-                    <div class="diff-icon">🧩</div>
-                    <div class="diff-name">Medium</div>
-                    <div class="diff-clue">20 Hints</div>
-                </a>
-                <a href="play.html?diff=hard" class="diff-card">
-                    <div class="diff-icon">🔥</div>
-                    <div class="diff-name">Extreme</div>
-                    <div class="diff-clue">10 Hints</div>
-                </a>
-            </div>
-            <p class="credits">Ayush · Salwa · Anjali</p>
         </div>
-    </div>
 
-    <script src="app.js"></script>
+        <div class="game-grid">
+            <a class="game-card" href="sudoku/">
+                <div class="game-preview" aria-hidden="true">
+                    <div class="pv-sudoku">
+                        <span>5</span><span></span><span></span><span>3</span><span></span>
+                        <span></span><span>2</span><span></span><span></span><span>8</span>
+                        <span></span><span></span><span>9</span><span></span><span></span>
+                        <span>7</span><span></span><span></span><span>1</span><span></span>
+                        <span></span><span>4</span><span></span><span></span><span>6</span>
+                    </div>
+                </div>
+                <div class="game-name">Sudoku</div>
+                <p class="game-desc">Fill the 9&times;9 grid so every row, column, and box holds one to nine, and compare four different AI solvers doing it live.</p>
+                <div class="game-teaches">Teaches: Backtracking, MRV, Forward Checking, Min-Conflicts</div>
+                <span class="game-cta">Play Game →</span>
+            </a>
+
+            <a class="game-card" href="n-queens/">
+                <div class="game-preview" aria-hidden="true">
+                    <div class="pv-nqueens">
+                        <span class="dark"></span><span>♛</span><span class="dark"></span><span></span><span class="dark"></span>
+                        <span class="dark"></span><span></span><span class="dark"></span><span></span><span class="dark">♛</span>
+                        <span></span><span class="dark"></span><span></span><span class="dark"></span><span></span>
+                        <span class="dark"></span><span></span><span class="dark"></span><span>♛</span><span class="dark"></span>
+                        <span></span><span class="dark"></span><span></span><span class="dark"></span><span></span>
+                    </div>
+                </div>
+                <div class="game-name">N Queens</div>
+                <p class="game-desc">Place queens so none attack each other, on a board you resize from 4&times;4 to 10&times;10, then watch recursive backtracking find a safe arrangement.</p>
+                <div class="game-teaches">Teaches: Recursive Backtracking</div>
+                <span class="game-cta">Play Game →</span>
+            </a>
+
+            <a class="game-card" href="nonograms/">
+                <div class="game-preview" aria-hidden="true">
+                    <div class="pv-nono">
+                        <span></span><span></span><span class="on"></span><span></span><span></span>
+                        <span></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span>
+                        <span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span><span class="on"></span>
+                        <span></span><span class="on"></span><span class="on"></span><span class="on"></span><span></span>
+                        <span></span><span></span><span class="on"></span><span></span><span></span>
+                    </div>
+                </div>
+                <div class="game-name">Nonograms</div>
+                <p class="game-desc">Use row and column clues to shade in a hidden picture, then watch a solver propagate constraints and backtrack when it has to guess.</p>
+                <div class="game-teaches">Teaches: Constraint Propagation, Backtracking</div>
+                <span class="game-cta">Play Game →</span>
+            </a>
+        </div>
+    </main>
+
+    <script src="js/nav.js"></script>
 </body>
 </html>

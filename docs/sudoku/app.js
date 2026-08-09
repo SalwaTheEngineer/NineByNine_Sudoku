@@ -702,6 +702,7 @@ let elapsed = 0;
 let aiOn = false;
 let done = false;
 let solveAnimRunId = 0;
+let hintPending = false;
 let lastReplayPayload = null;
 let activeReplayState = null;
 
@@ -735,7 +736,10 @@ function startGame(diff) {
     done = false;
     aiOn = false;
     elapsed = 0;
+    hintPending = false;
 
+    const hintBtn = document.querySelector('[data-act="hint"]');
+    if (hintBtn) hintBtn.disabled = false;
     document.getElementById("badge").textContent = diff.toUpperCase();
     document.getElementById("hints-used").textContent = "hints: 0";
     document.getElementById("win-banner").classList.add("hidden");
@@ -749,7 +753,7 @@ function startGame(diff) {
 
     if (!document.getElementById("home-screen")) {
         const label = diff.charAt(0).toUpperCase() + diff.slice(1);
-        document.title = `${label} · NinebyNine Sudoku AI`;
+        document.title = `${label} · NineByNine Sudoku AI`;
     }
 }
 
@@ -762,6 +766,32 @@ function startTimer() {
         const s = String(elapsed % 60).padStart(2, "0");
         document.getElementById("timer").textContent = `${m}:${s}`;
     }, 1000);
+}
+
+function renderNumpad() {
+    const np = document.getElementById("numpad");
+    if (!np) return;
+    if (!np.children.length) {
+        for (let n = 1; n <= 9; n++) {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "num-btn";
+            btn.textContent = String(n);
+            btn.dataset.act = "num";
+            btn.dataset.num = String(n);
+            np.appendChild(btn);
+        }
+    }
+    const counts = new Array(10).fill(0);
+    for (let r = 0; r < 9; r++) {
+        for (let c = 0; c < 9; c++) {
+            if (grid[r][c]) counts[grid[r][c]]++;
+        }
+    }
+    np.querySelectorAll(".num-btn").forEach((btn) => {
+        const n = Number(btn.dataset.num);
+        btn.classList.toggle("done", counts[n] >= 9);
+    });
 }
 
 function render() {
@@ -814,6 +844,7 @@ function render() {
     }
     document.getElementById("st-empty").textContent = String(empty);
     document.getElementById("st-errors").textContent = String(errors.size);
+    renderNumpad();
 }
 
 function clickCell(r, c) {
@@ -863,7 +894,7 @@ function chkWin() {
 }
 
 function doHint() {
-    if (!solution || done) return;
+    if (!solution || done || hintPending) return;
     let best = null;
     let minChoices = 10;
     for (let r = 0; r < 9; r++) {
@@ -878,6 +909,9 @@ function doHint() {
         }
     }
     if (!best) return;
+    hintPending = true;
+    const hintBtn = document.querySelector('[data-act="hint"]');
+    if (hintBtn) hintBtn.disabled = true;
     hintCell = best;
     selected = { r: best.r, c: best.c };
     hintsUsed++;
@@ -891,6 +925,8 @@ function doHint() {
         const cells = document.querySelectorAll("#board .cell");
         const idx = best.r * 9 + best.c;
         if (cells[idx]) cells[idx].classList.add("hint-pop");
+        hintPending = false;
+        if (hintBtn) hintBtn.disabled = false;
         chkWin();
     }, 700);
 }
@@ -1046,11 +1082,11 @@ function aiSolve(key) {
     mg.innerHTML = "";
 
     const rows = [
-        { l: "Status", v: res.solved ? "Solved" : "Failed", c: res.solved ? "#22c55e" : "#ef4444" },
-        { l: "Runtime", v: formatSolveMs(solveMs), c: "#fbbf24" },
-        { l: "Nodes Explored", v: m.nodes.toLocaleString(), c: "#60a5fa" },
-        { l: "Backtracks", v: m.backtracks.toLocaleString(), c: "#fb923c" },
-        { l: "Constraint Checks", v: m.checks.toLocaleString(), c: "#a78bfa" },
+        { l: "Status", v: res.solved ? "Solved" : "Failed", c: res.solved ? "var(--accent2)" : "var(--danger)" },
+        { l: "Runtime", v: formatSolveMs(solveMs), c: "var(--warn)" },
+        { l: "Nodes Explored", v: m.nodes.toLocaleString(), c: "var(--accent)" },
+        { l: "Backtracks", v: m.backtracks.toLocaleString(), c: "var(--sys-indigo)" },
+        { l: "Constraint Checks", v: m.checks.toLocaleString(), c: "var(--sys-purple)" },
     ];
 
     for (const row of rows) {
@@ -1064,7 +1100,7 @@ function aiSolve(key) {
         const anim = document.createElement("div");
         anim.className = "met-card";
         anim.innerHTML =
-            '<div class="met-label">Animation Time</div><div class="met-val" id="met-anim-val" style="color:#94a3b8">…</div>';
+            '<div class="met-label">Animation Time</div><div class="met-val" id="met-anim-val" style="color:var(--ink-muted)">…</div>';
         mg.appendChild(anim);
     }
     const runtimeNote = document.getElementById("res-runtime-note");
@@ -1127,6 +1163,7 @@ document.addEventListener("DOMContentLoaded", () => {
         else if (act === "replay-slow") replayLastSolveSlow();
         else if (act === "pause-replay") toggleReplayPause();
         else if (act === "ai" && el.dataset.algo) aiSolve(el.dataset.algo);
+        else if (act === "num" && el.dataset.num && !el.classList.contains("done")) inputNum(Number(el.dataset.num));
     });
 
     const home = document.getElementById("home-screen");

@@ -1,0 +1,277 @@
+/* Nonograms — page-specific styles, built on the shared tokens + page shell in ../style.css */
+
+/* board + clue grid, shared shape between manual + watch boards */
+.nono-board-wrap {
+    max-width: 100%;
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+    padding-bottom: 2px; /* room for a scrollbar if one ever appears */
+}
+.nono-grid {
+    --n: 5;
+    /* shrink toward the viewport on narrow screens instead of overflowing it */
+    --cell: clamp(20px, calc((92vw - 60px) / var(--n)), calc(42px - var(--big, 0) * 10px));
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+        "corner colclues"
+        "rowclues cells";
+    gap: 3px;
+    justify-content: center;
+    flex: none;
+}
+
+.nono-col-clues {
+    grid-area: colclues;
+    display: grid;
+    grid-template-columns: repeat(var(--n), var(--cell));
+}
+.nono-row-clues {
+    grid-area: rowclues;
+    display: grid;
+    grid-template-rows: repeat(var(--n), var(--cell));
+}
+.nono-cells {
+    grid-area: cells;
+    display: grid;
+    grid-template-columns: repeat(var(--n), var(--cell));
+    grid-template-rows: repeat(var(--n), var(--cell));
+    border-radius: var(--radius-sm);
+    box-shadow: var(--inset-deep);
+    overflow: hidden;
+    background: var(--canvas-deep);
+}
+
+.nono-row-clue {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+    padding-right: 10px;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ink-muted);
+    transition: color 0.15s ease;
+}
+.nono-col-clue {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    padding-bottom: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--ink-muted);
+    transition: color 0.15s ease;
+}
+.nono-clue-num {
+    line-height: 1;
+}
+.nono-row-clue.satisfied,
+.nono-col-clue.satisfied {
+    color: var(--accent2);
+    opacity: 0.55;
+}
+.nono-row-clue.satisfied .nono-clue-num,
+.nono-col-clue.satisfied .nono-clue-num {
+    text-decoration: line-through;
+}
+.nono-row-clue.line-active,
+.nono-col-clue.line-active {
+    color: var(--accent);
+    opacity: 1;
+}
+
+.nono-cell {
+    position: relative;
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: #fbfbfd;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(var(--cell) * 0.42);
+    color: var(--ink-muted);
+    border-right: 1px solid rgba(110, 110, 115, 0.14);
+    border-bottom: 1px solid rgba(110, 110, 115, 0.14);
+    transition: background 0.08s ease;
+}
+.nono-cell.algo {
+    cursor: default;
+}
+.nono-cell.br5 {
+    border-right: 2px solid rgba(110, 110, 115, 0.34);
+}
+.nono-cell.bb5 {
+    border-bottom: 2px solid rgba(110, 110, 115, 0.34);
+}
+.nono-cell:hover {
+    background: var(--accent-soft);
+}
+.nono-cell:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+    z-index: 2;
+}
+.nono-cell.fill {
+    background: var(--ink);
+}
+.nono-cell.fill:hover {
+    background: var(--ink);
+    opacity: 0.9;
+}
+.nono-cell.x {
+    color: var(--ink-faint);
+}
+.nono-cell.wrong {
+    outline: 2px dashed var(--danger);
+    outline-offset: -2px;
+}
+.nono-cell.wrong::after {
+    content: "!";
+    position: absolute;
+    top: 1px;
+    right: 3px;
+    font-size: 0.6em;
+    font-weight: 800;
+    color: var(--danger);
+}
+
+/* watch-mode cell states */
+.nono-cell.line-active {
+    background: var(--accent-soft);
+}
+.nono-cell.guess-cell {
+    outline: 2px solid var(--warn);
+    outline-offset: -2px;
+}
+.nono-cell.backtrack-cell {
+    outline: 2px solid var(--danger);
+    outline-offset: -2px;
+    animation: nono-shake 0.4s ease;
+}
+@keyframes nono-shake {
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-2px);
+    }
+    75% {
+        transform: translateX(2px);
+    }
+}
+
+/* toolbar */
+.nono-toolbar {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    max-width: 420px;
+}
+.tool-btn {
+    flex: 1;
+    border: none;
+    background: var(--canvas);
+    color: var(--ink-muted);
+    font: inherit;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 10px 8px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    box-shadow: var(--raised-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+.tool-btn[aria-pressed="true"] {
+    color: var(--accent);
+    box-shadow: var(--inset);
+}
+.tool-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    background: var(--ink);
+    display: inline-block;
+}
+.tool-btn.x-tool .tool-swatch {
+    background: transparent;
+    color: var(--ink-muted);
+    width: auto;
+    height: auto;
+    font-weight: 800;
+}
+
+.nono-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+    max-width: 420px;
+}
+
+.nono-status-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: var(--ink-muted);
+}
+
+.nono-msg-box {
+    text-align: center;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    background: var(--canvas);
+    box-shadow: var(--inset);
+    font-size: 0.8rem;
+    width: 100%;
+    max-width: 420px;
+}
+.nono-msg-box.hint {
+    color: var(--warn);
+}
+.nono-msg-box.check {
+    color: var(--ink);
+}
+.nono-msg-box.complete {
+    color: var(--accent2);
+    font-weight: 700;
+}
+
+/* watch panel */
+.nono-status-msg {
+    padding: 12px 14px;
+    border-radius: var(--radius-sm);
+    background: var(--canvas);
+    box-shadow: var(--inset);
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--ink);
+    width: 100%;
+    max-width: 420px;
+    min-height: 2.6em;
+}
+.nono-counters {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+    font-size: 0.76rem;
+    color: var(--ink-muted);
+}
+.nono-counters strong {
+    color: var(--accent);
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+}

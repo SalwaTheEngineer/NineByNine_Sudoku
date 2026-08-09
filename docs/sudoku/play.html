@@ -5,13 +5,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Playing · NinebyNine Sudoku AI</title>
-    <link rel="stylesheet" href="style.css">
+    <meta name="color-scheme" content="light">
+    <title>Playing · NineByNine Sudoku AI</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
     <div id="play-screen" class="screen active">
         <div class="top-bar">
-            <button type="button" class="btn-ghost" data-act="go-home">← Back Home</button>
+            <button type="button" class="btn-ghost" data-act="go-home">← Difficulty</button>
             <div class="top-info">
                 <span id="badge" class="badge">EASY</span>
                 <span id="timer" class="timer">00:00</span>
@@ -54,7 +55,7 @@
     <div id="result-screen" class="screen">
         <div class="res-top">
             <button type="button" class="btn-ghost" data-act="go-play">← Puzzle</button>
-            <button type="button" class="btn-ghost" data-act="go-home">Home</button>
+            <button type="button" class="btn-ghost" data-act="go-home">Difficulty</button>
         </div>
         <div class="res-title"><span id="res-icon"></span><div><h1 id="res-name"></h1><p id="res-tag" class="res-tag"></p></div></div>
         <div class="res-row">
@@ -85,6 +86,7 @@
         </div>
     </div>
 
+    <script src="../js/nav.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
