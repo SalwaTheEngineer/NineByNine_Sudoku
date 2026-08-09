@@ -1,5 +1,36 @@
 /* Nonograms — page-specific styles, built on the shared tokens + page shell in ../style.css */
 
+/* The shared page shell (.game-top, .tabs) reads as "just another card" when the
+   whole board/toolbar/actions area is also separate cards of equal weight.
+   Flatten the two header rows so the one card that matters — the game panel
+   below — is the thing that actually looks raised. Scoped to this page only. */
+#nono-page .game-top {
+    background: transparent;
+    box-shadow: none;
+    border-bottom: 1px solid rgba(110, 110, 115, 0.16);
+    border-radius: 0;
+    padding: 4px 4px 16px;
+}
+#nono-page .tabs {
+    margin-bottom: 22px;
+}
+
+/* The single card that holds the whole interactive game — board, tool,
+   status, actions — so it reads as one unit instead of a stack of separate
+   same-weight pieces. This is the panel that's actually meant to draw the eye. */
+.nono-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    max-width: 460px;
+    padding: 24px 22px 22px;
+    border-radius: var(--radius-lg);
+    background: var(--canvas);
+    box-shadow: var(--raised);
+}
+
 /* board + clue grid, shared shape between manual + watch boards */
 .nono-board-wrap {
     max-width: 100%;
@@ -11,7 +42,7 @@
 .nono-grid {
     --n: 5;
     /* shrink toward the viewport on narrow screens instead of overflowing it */
-    --cell: clamp(20px, calc((92vw - 60px) / var(--n)), calc(42px - var(--big, 0) * 10px));
+    --cell: clamp(22px, calc((92vw - 60px) / var(--n)), calc(46px - var(--big, 0) * 10px));
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-areas:
@@ -38,7 +69,7 @@
     grid-template-columns: repeat(var(--n), var(--cell));
     grid-template-rows: repeat(var(--n), var(--cell));
     border-radius: var(--radius-sm);
-    box-shadow: var(--inset-deep);
+    box-shadow: var(--inset-deep), inset 0 0 0 1px rgba(0, 0, 0, 0.07);
     overflow: hidden;
     background: var(--canvas-deep);
 }
@@ -176,37 +207,41 @@
     }
 }
 
-/* toolbar */
+/* toolbar — one connected segmented control, not two separate button-cards */
 .nono-toolbar {
     display: flex;
-    gap: 8px;
     width: 100%;
-    max-width: 420px;
+    max-width: 320px;
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    background: var(--canvas);
+    box-shadow: var(--inset);
 }
 .tool-btn {
     flex: 1;
     border: none;
-    background: var(--canvas);
+    background: transparent;
     color: var(--ink-muted);
     font: inherit;
     font-weight: 700;
     font-size: 0.8rem;
-    padding: 10px 8px;
-    border-radius: var(--radius-sm);
+    padding: 8px 8px;
+    border-radius: calc(var(--radius-sm) - 3px);
     cursor: pointer;
-    box-shadow: var(--raised-sm);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 6px;
+    transition: background 0.12s ease, box-shadow 0.12s ease, color 0.12s ease;
 }
 .tool-btn[aria-pressed="true"] {
-    color: var(--accent);
-    box-shadow: var(--inset);
+    color: var(--ink);
+    background: var(--canvas);
+    box-shadow: var(--raised-sm);
 }
 .tool-swatch {
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
     border-radius: 3px;
     background: var(--ink);
     display: inline-block;
@@ -218,12 +253,62 @@
     height: auto;
     font-weight: 800;
 }
+.tool-btn[aria-pressed="true"].x-tool .tool-swatch {
+    color: var(--ink);
+}
 
+/* actions — one clear primary (Check Puzzle), Hint as the helpful secondary,
+   Reset/Undo demoted to plain text so they don't compete for attention */
 .nono-actions {
     display: flex;
-    gap: 10px;
+    align-items: center;
+    gap: 4px;
     width: 100%;
     max-width: 420px;
+}
+.ghost-btn {
+    border: none;
+    background: transparent;
+    color: var(--ink-muted);
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.78rem;
+    padding: 9px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+.ghost-btn:hover:not(:disabled) {
+    background: var(--canvas-deep);
+    color: var(--ink);
+}
+.ghost-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+.ghost-btn.hint {
+    color: var(--warn);
+}
+.primary-btn {
+    margin-left: auto;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 10px 18px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 113, 227, 0.35);
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.primary-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(0, 113, 227, 0.4);
+}
+.primary-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(0, 113, 227, 0.35);
 }
 
 .nono-status-row {
@@ -231,16 +316,15 @@
     gap: 16px;
     flex-wrap: wrap;
     justify-content: center;
-    font-size: 0.8rem;
-    color: var(--ink-muted);
+    font-size: 0.76rem;
+    color: var(--ink-faint);
 }
 
 .nono-msg-box {
     text-align: center;
     padding: 10px 12px;
     border-radius: var(--radius-sm);
-    background: var(--canvas);
-    box-shadow: var(--inset);
+    background: var(--canvas-deep);
     font-size: 0.8rem;
     width: 100%;
     max-width: 420px;

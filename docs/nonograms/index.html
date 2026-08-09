@@ -30,46 +30,44 @@
         <div id="panel-manual" role="tabpanel" aria-labelledby="tab-manual">
             <div class="game-row">
                 <div class="board-col">
-                    <div class="nono-board-wrap">
-                        <div id="nono-board" class="nono-grid" aria-label="Nonogram puzzle grid">
-                            <div id="nono-row-clues" class="nono-row-clues"></div>
-                            <div id="nono-col-clues" class="nono-col-clues"></div>
-                            <div id="nono-cells" class="nono-cells" role="group" aria-label="Puzzle cells"></div>
+                    <div class="nono-panel">
+                        <div class="nono-board-wrap">
+                            <div id="nono-board" class="nono-grid" aria-label="Nonogram puzzle grid">
+                                <div id="nono-row-clues" class="nono-row-clues"></div>
+                                <div id="nono-col-clues" class="nono-col-clues"></div>
+                                <div id="nono-cells" class="nono-cells" role="group" aria-label="Puzzle cells"></div>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="nono-toolbar" role="group" aria-label="Marking tool">
-                        <button type="button" id="nono-tool-fill" class="tool-btn" aria-pressed="true">
-                            <span class="tool-swatch" aria-hidden="true"></span> Fill
-                        </button>
-                        <button type="button" id="nono-tool-x" class="tool-btn x-tool" aria-pressed="false">
-                            <span class="tool-swatch" aria-hidden="true">✕</span> X
-                        </button>
-                    </div>
+                        <div class="nono-toolbar" role="group" aria-label="Marking tool">
+                            <button type="button" id="nono-tool-fill" class="tool-btn" aria-pressed="true">
+                                <span class="tool-swatch" aria-hidden="true"></span> Fill
+                            </button>
+                            <button type="button" id="nono-tool-x" class="tool-btn x-tool" aria-pressed="false">
+                                <span class="tool-swatch" aria-hidden="true">✕</span> X
+                            </button>
+                        </div>
 
-                    <div class="nono-status-row">
-                        <span id="nono-progress">0% of cells marked</span>
-                    </div>
+                        <div class="nono-status-row">
+                            <span id="nono-progress">0% of cells marked</span>
+                        </div>
 
-                    <div class="nono-actions">
-                        <button type="button" class="act-btn" id="nono-reset">Reset</button>
-                        <button type="button" class="act-btn" id="nono-undo">Undo</button>
-                        <button type="button" class="act-btn hint-btn" id="nono-hint">Hint</button>
-                        <button type="button" class="act-btn ai-btn" id="nono-check">Check Puzzle</button>
-                    </div>
+                        <div class="nono-actions">
+                            <button type="button" class="ghost-btn" id="nono-reset">Reset</button>
+                            <button type="button" class="ghost-btn" id="nono-undo">Undo</button>
+                            <button type="button" class="ghost-btn hint" id="nono-hint">Hint</button>
+                            <button type="button" class="primary-btn" id="nono-check">Check Puzzle</button>
+                        </div>
 
-                    <div id="nono-complete-msg" class="nono-msg-box complete hidden" role="status">Solved — every filled cell matches the picture.</div>
-                    <div id="nono-check-msg" class="nono-msg-box check hidden" role="status"></div>
-                    <div id="nono-hint-msg" class="nono-msg-box hint hidden" role="status"></div>
+                        <div id="nono-complete-msg" class="nono-msg-box complete hidden" role="status">Solved — every filled cell matches the picture.</div>
+                        <div id="nono-check-msg" class="nono-msg-box check hidden" role="status"></div>
+                        <div id="nono-hint-msg" class="nono-msg-box hint hidden" role="status"></div>
+                    </div>
                 </div>
                 <div class="side-panel">
                     <div class="box rules-box">
-                        <div class="box-label">Rules</div>
-                        The number(s) beside each row and above each column tell you the length of each run of filled cells in that line, in order, with at least one empty cell between runs.
-                    </div>
-                    <div class="box stats-box">
-                        <div class="box-label">Tools</div>
-                        Pick Fill or X, then click a cell to mark it. Click a cell that already has that mark to clear it back to unknown. Right-click applies the other tool as a shortcut.
+                        <div class="box-label">How to read it</div>
+                        Row and column numbers give the length of each run of filled cells, in order, with a gap between runs. Pick Fill or X, click a cell to mark it, click again to clear it. Right-click applies the other tool.
                     </div>
                 </div>
             </div>
@@ -78,21 +76,23 @@
         <div id="panel-watch" role="tabpanel" aria-labelledby="tab-watch" class="hidden">
             <div class="game-row">
                 <div class="board-col">
-                    <div class="nono-board-wrap">
-                        <div id="nono-algo-board" class="nono-grid" aria-label="Algorithm grid">
-                            <div id="nono-algo-row-clues" class="nono-row-clues"></div>
-                            <div id="nono-algo-col-clues" class="nono-col-clues"></div>
-                            <div id="nono-algo-cells" class="nono-cells" role="group" aria-label="Algorithm cells"></div>
+                    <div class="nono-panel">
+                        <div class="nono-board-wrap">
+                            <div id="nono-algo-board" class="nono-grid" aria-label="Algorithm grid">
+                                <div id="nono-algo-row-clues" class="nono-row-clues"></div>
+                                <div id="nono-algo-col-clues" class="nono-col-clues"></div>
+                                <div id="nono-algo-cells" class="nono-cells" role="group" aria-label="Algorithm cells"></div>
+                            </div>
                         </div>
+                        <p id="nono-status-msg" class="nono-status-msg" aria-live="polite"></p>
+                        <div class="nono-counters">
+                            <span>Deductions: <strong id="nonow-deductions">0</strong></span>
+                            <span>Guesses: <strong id="nonow-guesses">0</strong></span>
+                            <span>Backtracks: <strong id="nonow-backtracks">0</strong></span>
+                        </div>
+                        <div id="nono-playback"></div>
+                        <div id="nono-watch-done" class="nono-msg-box complete hidden" role="status">Solved — every row and column matches its clue.</div>
                     </div>
-                    <p id="nono-status-msg" class="nono-status-msg" aria-live="polite"></p>
-                    <div class="nono-counters">
-                        <span>Deductions: <strong id="nonow-deductions">0</strong></span>
-                        <span>Guesses: <strong id="nonow-guesses">0</strong></span>
-                        <span>Backtracks: <strong id="nonow-backtracks">0</strong></span>
-                    </div>
-                    <div id="nono-playback"></div>
-                    <div id="nono-watch-done" class="nono-msg-box complete hidden" role="status">Solved — every row and column matches its clue.</div>
                 </div>
                 <div class="side-panel">
                     <h3>How the Solver Works</h3>
